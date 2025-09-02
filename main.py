@@ -1,4 +1,3 @@
-import pywhatkit
 import chainlit as cl
 from agents import Agent, Runner, SQLiteSession , function_tool
 from openai.types.responses import ResponseTextDeltaEvent
@@ -72,24 +71,6 @@ summarize_agent = Agent(
     instructions="You're a summarization agent. Summarize the provided text comprehensively and accurately, capturing all details and main points in a highly structured and stylish format. Use bullet points with sub-bullets where necessary for clarity, ensuring no data is missed. Highlight important details using **bold text** and emphasize critical information with *italics*. Present the summary in a visually appealing layout, prioritizing readability and completeness. Respond in Urdu if the user prefers it. 😊",
 )
 
-# 🟢 WhatsApp Messaging Tool
-@function_tool
-def send_whatsapp_message(phone_number: str, message: str):
-    """
-    Send a WhatsApp message instantly using WhatsApp Web 📲.  
-    - phone_number: Include country code (e.g., +923001234567)  
-    - message: The text message to send  
-    """
-    try:
-        pywhatkit.sendwhatmsg_instantly(
-            phone_no=phone_number,
-            message=message,
-            wait_time=5,    # seconds to wait before sending
-            tab_close=True  # close the tab automatically
-        )
-        return f"✅ WhatsApp message sent to {phone_number}! 📩"
-    except Exception as e:
-        return f"❌ Failed to send WhatsApp message: {str(e)}"
 
 # 🎯 Main Agent
 main_agent = Agent(
@@ -107,7 +88,7 @@ Your job is to:
 - Do NOT explain tool calls — just return final results.
 - Handle all requests dynamically & politely.
 """,
-    tools=[send_whatsapp_message,web_search,products, send_user_email, clean_history, generate_email_content, support],
+    tools=[web_search,products, send_user_email, clean_history, generate_email_content, support],
 )
 
 # 🚀 Starter Messages
